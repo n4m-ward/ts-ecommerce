@@ -5,7 +5,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: up docker database
+        run: docker-compose up -d
       - name: Install modules
         run: yarn
+      - name: run migrations
+        run: yarn migration:up
       - name: Run tests
         run: yarn test
