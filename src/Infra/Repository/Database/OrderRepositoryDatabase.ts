@@ -9,13 +9,13 @@ export default class OrderRepositoryDatabase implements OrderRepository {
 
     async count(): Promise<number> {
         const [row] = await this.connection.query('select count(*)::int from "order"');
-        return row;
+        return row.count;
     }
 
     async save(order: Order): Promise<void> {
         const [orderData] = await this.connection.query(
             `
-                insert into "order"(code, cpf, issue_date, freight, sequence, total, coupon)
+                insert into "order"(code, cpf, issue_date, freight, sequence, total, coupon_code)
                 values ($1, $2, $3, $4, $5, $6, $7)
                 returning *
             `,
@@ -42,6 +42,7 @@ export default class OrderRepositoryDatabase implements OrderRepository {
                 ]
             )
         }
+        await this.connection.close();
     }
 
 }

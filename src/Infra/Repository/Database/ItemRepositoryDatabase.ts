@@ -9,11 +9,13 @@ export default class ItemRepositoryDatabase implements ItemRepository {
 
     async getItem(idItem: number): Promise<Item> {
         const [itemData] = await this.connection.query("select * from item where id_item = ?", [idItem]);
+        await this.connection.close();
         return new Item(itemData.id_item, itemData.description, parseFloat(itemData.price))
     }
 
     async list(): Promise<Item[]> {
         const itemsData = await this.connection.query("select * from item limit 50;");
+        await this.connection.close();
         const items: Item[] = []
         for(const itemData of itemsData) {
             items.push(new Item(itemData.id_item, itemData.description, parseFloat(itemData.price)))
@@ -24,9 +26,10 @@ export default class ItemRepositoryDatabase implements ItemRepository {
 
     async save(item: Item): Promise<void> {
         await this.connection.query(
-            "insert into items(description, price) values(?, ?);",
+            "insert into item(description, price) values(?, ?);",
             [item.description, item.price]
         )
+        await this.connection.close();
     }
 
 }

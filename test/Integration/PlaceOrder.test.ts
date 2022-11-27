@@ -5,10 +5,13 @@ import Dimensions from "../../src/Domain/Entity/Dimensions";
 import OrderRepositoryMemory from "../../src/Infra/Repository/Memory/OrderRepositoryMemory";
 import CouponRepositoryMemory from "../../src/Infra/Repository/Memory/CouponRepositoryMemory";
 import Coupon from "../../src/Domain/Entity/Coupon";
+import OrderRepositoryDatabase from "../../src/Infra/Repository/Database/OrderRepositoryDatabase";
+import PgPromiseConnectionAdapter from "../../src/Infra/Database/PgPromiseConnectionAdapter";
 
 it("should create an order", async () => {
     const itemRepository = new ItemRepositoryMemory();
-    const orderRepository = new OrderRepositoryMemory();
+    const connection = new PgPromiseConnectionAdapter();
+    const orderRepository = new OrderRepositoryDatabase(connection);
     const couponRepository = new CouponRepositoryMemory();
 
     const item1 = new Item(1, 'Guitarra', 1000, new Dimensions(100, 30, 10), 3)

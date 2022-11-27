@@ -19,9 +19,11 @@ export default class CreateTableItem001 implements MigrationInterface {
                 );`,
             {}
         )
+        await this.connection.close();
     }
 
     async down(): Promise<void> {
-        await this.connection.query("drop table if exists coupon")
+        await this.connection.query("drop table if exists coupon");
+        await this.connection.close();
     }
 }

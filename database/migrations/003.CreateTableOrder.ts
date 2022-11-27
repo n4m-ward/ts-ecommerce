@@ -25,9 +25,11 @@ export default class CreateTableOrder implements MigrationInterface {
                 );`,
             {}
         )
+        await this.connection.close();
     }
 
     async down(): Promise<void> {
-        await this.connection.query('drop table if exists "order"')
+        await this.connection.query('drop table if exists "order"');
+        await this.connection.close();
     }
 }

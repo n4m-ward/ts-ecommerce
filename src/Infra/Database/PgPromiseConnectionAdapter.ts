@@ -11,4 +11,8 @@ export default class PgPromiseConnectionAdapter implements Connection {
     async query(statement: string, params: any = {}): Promise<any> {
         return await this.pgp.query(statement, params);
     }
+
+    close(): Promise<void> {
+        return this.pgp.$pool.end();
+    }
 }
